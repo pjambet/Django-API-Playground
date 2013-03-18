@@ -23,14 +23,20 @@ TYPE_WIDGET_MAPPING = {
     "select": forms.Select,
 }
 
-def build_data_form(parameters):
+
+def build_data_form(parameters, opts={}):
     """
     Builds a form with given parameters as dynamically.
     """
     form_fields = SortedDict()
+
+    if opts.get("authentication", {}):
+        parameters.append({'type': 'string', 'name': 'username'})
+        parameters.append({'type': 'string', 'name': 'api_key'})
+
     for parameter in parameters:
         parameter_name = parameter.get("name")
-        parameter_type = parameter.get("type", "string") # default type is "string"
+        parameter_type = parameter.get("type", "string")  # default type is "string"
         parameter_choices = parameter.get("choices", [])
         is_required = parameter.get("is_required", False)
         form_widget = TYPE_WIDGET_MAPPING.get(parameter_type)
@@ -62,11 +68,12 @@ def build_url_form(url):
     """
     form_fields = SortedDict()
     url_parameters = tokenize_url_parameters(url)
+
     for token, parameter in url_parameters:
         form_fields["url-parameter-%s" % parameter] = forms.CharField(
             label=parameter, widget=forms.TextInput(attrs={
                 "required": "required",
                 "data-token": token,
-                }))
+            }))
 
     return type("URLParameterForm", (forms.Form,), form_fields)

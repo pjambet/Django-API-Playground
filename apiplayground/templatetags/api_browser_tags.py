@@ -7,7 +7,8 @@ register = template.Library()
 @register.assignment_tag()
 def get_endpoint_forms(endpoint):
     url_parameter_form = build_url_form(endpoint.get("url", ""))
-    data_parameter_form = build_data_form(endpoint.get("parameters", []))
+    data_parameter_form = build_data_form(endpoint.get("parameters", []),
+                                          opts=endpoint.get("options", {}))
 
     return {
         "url_parameter_form": url_parameter_form,
