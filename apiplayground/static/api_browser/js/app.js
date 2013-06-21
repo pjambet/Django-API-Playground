@@ -11,10 +11,10 @@ var APIBrowser = $.Class.extend({
 
         // Global elements
         global_inputs : "#global-form input[type='text'], #global-form input[type='checkbox'], #global-form textarea, #global-form select",
- 
+
         // API Resources
         endpoint_form : ".endpoint form",
-        endpoint_anchor: ".endpoint a",
+        endpoint_anchor: ".endpoint > a",
         try_it: ".try-it",
         request: ".request",
         code: "code",
